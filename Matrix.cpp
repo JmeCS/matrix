@@ -1,4 +1,5 @@
 #include <iostream>
+#include <numeric>
 #include "Matrix.h"
 
 // Constructors
@@ -124,8 +125,9 @@ Matrix Matrix::operator+(const double rhs) {
   Matrix output(m_nrow, m_ncol, 0.0);
 
   for (unsigned i = 0; i < m_nrow; i++) {
-    for (unsigned j = 0; j < m_ncol; j++)
-    output.m_mat[i][j] = this->m_mat[i][j] + rhs;
+    for (unsigned j = 0; j < m_ncol; j++) {
+      output.m_mat[i][j] = this->m_mat[i][j] + rhs;
+    }
   }
   return(output);
 }
@@ -134,8 +136,9 @@ Matrix Matrix::operator-(const double rhs) {
   Matrix output(m_nrow, m_ncol, 0.0);
 
   for (unsigned i = 0; i < m_nrow; i++) {
-    for (unsigned j = 0; j < m_ncol; j++)
-    output.m_mat[i][j] = this->m_mat[i][j] - rhs;
+    for (unsigned j = 0; j < m_ncol; j++) {
+      output.m_mat[i][j] = this->m_mat[i][j] - rhs;
+    }
   }
   return(output);
 }
@@ -144,8 +147,9 @@ Matrix Matrix::operator*(const double rhs) {
   Matrix output(m_nrow, m_ncol, 0.0);
 
   for (unsigned i = 0; i < m_nrow; i++) {
-    for (unsigned j = 0; j < m_ncol; j++)
-    output.m_mat[i][j] = this->m_mat[i][j] * rhs;
+    for (unsigned j = 0; j < m_ncol; j++) {
+      output.m_mat[i][j] = this->m_mat[i][j] * rhs;
+    }
   }
   return(output);
 }
@@ -153,14 +157,25 @@ Matrix Matrix::operator*(const double rhs) {
 
 // Matrix/Vector multiplication
 std::vector<double> Matrix::operator*(const std::vector<double>& rhs) {
-  std::vector<double> output(m_ncol, 0);
+  std::vector<double> output(rhs.size(), 0.0);
 
   for (unsigned i = 0; i < m_nrow; i++) {
-    double v = 0;
-    for (unsigned j = 0; j < m_ncol; i++) {
-      v += this->m_mat[i][j] * rhs[i];
+    for (unsigned j = 0; j < m_ncol; j++) {
+      output[i] = this->m_mat[i][j] * rhs[i];
     }
-    output.push_back(v);
+  }
+  return(output);
+}
+
+std::vector<double> Matrix::dotProduct(const std::vector<double>& rhs) {
+  std::vector<double> output(m_nrow, 0.0);
+
+  for (unsigned i = 0; i < m_ncol; i++) {
+    std::vector<double> v(m_ncol, 0.0);
+    for (unsigned j = 0; j < m_ncol; j++) {
+      v[j] = this->m_mat[i][j] * rhs[i];
+    }
+    output[i] = std::accumulate(v.begin(), v.end(), 0);
   }
   return(output);
 }

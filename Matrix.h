@@ -31,8 +31,9 @@ public:
   Matrix operator-(const double rhs);
   Matrix operator*(const double rhs);
 
-  // Matrix/vector operators
+  // Matrix/vector operations
   std::vector<double> operator*(const std::vector<double>& rhs);
+  std::vector<double> dotProduct(const std::vector<double>& rhs);
 
   // Getters
   unsigned getRows() const;
